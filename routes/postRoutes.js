@@ -23,8 +23,8 @@ router.post("/addpost",(req,res) => {
          posteddate:result.posteddate
        },
        type:{
-         request:"POST",
-         url:"http://localhost:8000/post"
+         request:"GET",
+         url:"http://localhost:8000/post/"+result._id
        }
      })
    }).catch(err=>{
