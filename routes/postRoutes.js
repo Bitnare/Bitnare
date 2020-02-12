@@ -1,31 +1,29 @@
 const express= require('express');
-const router= Router.express();
-const postModel= require('../model/Posts');
+const router= express.Router();
+const postModel= require('../model/Posts.js');
 
 
-router.post('/addproduct',(req,res,next)=>{
-const createPosts= new postModel({
-  postdescription:req.body.postdescription,
-  postimage:req.body.postimage,
-  posteddate:req.body.posteddate
+router.post("/addpost",(req,res) => {
+
+    data = {
+        "postdescription"    : req.body.postdescription,
+        "postimage"   : req.body.postimage,
+        "posteddate":req.body.posteddate
+
+    }
+
+    const addPost= new postModel(data);
+  addPost.save().then(result=>{
+     res.status(200).json({
+       "message":"Post added Sucessfully",
+       "result":result
+     })
+   }).catch(err=>{
+
+     res.status(500).json({"message":"Error creating Post"})
+   })
+
 });
-
-createPosts.save().
-then(result=>{
-res.status(200).json({
-  "message":"Post is created Sucessfully",
-  "Posts":result
-
-
-})
-
-}).
-
-catch(err=>{
-  next({"message":"Sorry! some error while creating posts"})
-})
-});
-
 
 
 
