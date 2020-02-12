@@ -18,6 +18,8 @@ const userSchema = new Schema({
     education   :  {type:String},
     skills      :  {type:String},
     user_type   :  {type:String},
+    username    :  {type:String, trim: true, index: true, required:true},
+    password    :  {type:String, trim: true, index: true, unique:true}
 
 })
 
