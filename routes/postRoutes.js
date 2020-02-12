@@ -26,6 +26,16 @@ router.post("/addpost",(req,res) => {
 });
 
 
+router.get('/posts',(req,res,next)=>{
+postModel.find().exec().
+then(result=>{
+res.status(200).json({"Message":"All posts","Posts":result})
 
+}).catch(error=>{
+  res.status(500).json({"Error":error})
+})
+
+
+});
 
 module.exports=router;
