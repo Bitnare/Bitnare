@@ -6,7 +6,7 @@ const mongoose = require('./database/db');
 const cors = require("cors");
 
 const userRegister = require("./routes/userRegister");
-const postRoutes= require("./routes/postRoutes");
+const postRoutes= require("./routes/postRoutes.js");
 
 
 app.use(morgan("dev"));
