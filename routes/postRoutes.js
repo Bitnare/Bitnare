@@ -39,7 +39,7 @@ router.get('/',(req,res,next)=>{
 postModel.find().select('_id postdescription postimage posteddate ').exec().
 then(results=>{
   const response= {
-        count: results.lenght,
+        count: results.length,
         posts: results.map(result=>{
             return{
               _id: result._id,
@@ -84,10 +84,8 @@ type:{
     "message":"Error finding Post"
   })
 })
-
-
-
-
 });
+
+
 
 module.exports=router;
