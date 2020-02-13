@@ -1,13 +1,37 @@
 const express= require('express');
 const router= express.Router();
+const multer= require('multer');
 const postModel= require('../model/Posts.js');
 
+ const storage= multer.diskStorage({
+ destination:(req,file,cb)=>{
+ cb(null, './uploads/');
+ },
 
-router.post("/addpost",(req,res) => {
+ filename:(req,file,cb)=>{
+ cb(null,   Date.now()+file.originalname );
+ }
+ });
 
+const fileFilter= (req,file,cb)=>{
+if(file.mimetype ==='image/png' || file.mimetype==='image/jpeg' || file.mimetype==='image/jpg' ){
+cb(null,true)
+
+}else{
+
+
+    cb(null,false)
+  }
+};
+
+const upload= multer({storage:storage,fileFilter:fileFilter});
+
+
+router.post("/addpost",upload.single('postimage'),(req,res) => {
+        console.log(req.file);
     data = {
         "postdescription": req.body.postdescription,
-        "postimage":req.body.postimage,
+        "postimage":req.file.path,
         "posteddate":req.body.posteddate
 
     }
