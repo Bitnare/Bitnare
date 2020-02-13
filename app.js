@@ -4,10 +4,13 @@ const morgan = require('morgan');
 const bodyparser = require('body-parser');
 const mongoose = require('./database/db');
 const cors = require("cors");
+const multer = require('multer');
 
 const userRegister = require("./routes/userRegister");
 const bitnareEvents = require("./routes/bitnareEvents");
 
+
+app.use("/uploads",express.static('uploads'))
 app.use(morgan("dev"));
 app.use(bodyparser.urlencoded({extended:false}));
 app.use(bodyparser.json());

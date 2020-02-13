@@ -1,6 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const BitnareEvent = require('../model/BitnareEvents');
+const multer= require('multer');
+// SET STORAGE
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, './uploads/bitnare_events')
+    },
+    filename: function (req, file, cb) {
+      cb(null, Date.now() +'-' + file.originalname);
+    }
+  }) ;
+   
+var upload = multer({ storage: storage });
 
 // Get all Events
 router.get('/',async (req,res,next)=>{
@@ -40,13 +52,14 @@ router.get('/:id',async (req,res,next)=>{
 });
 
 // Post event
-router.post('/',async (req,res,next)=>{
+router.post('/',upload.single('myFile'),async (req,res,next)=>{
    try{
+    req.body.photo = req.file.path;   
     const event = await BitnareEvent.create(req.body);
     res.status(201).json({
         sucess:true,
         data:event,
-    })
+    });
     }
     catch(e){
         res.status(404).json({
