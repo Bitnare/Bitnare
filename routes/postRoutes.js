@@ -2,6 +2,8 @@ const express= require('express');
 const router= express.Router();
 const multer= require('multer');
 const postModel= require('../model/Posts.js');
+
+//for stroing image destination and filename
 const storage= multer.diskStorage({
 destination:(req,file,cb)=>{
  cb(null, './uploads/');
@@ -10,6 +12,8 @@ filename:(req,file,cb)=>{
  cb(null,   Date.now()+file.originalname );
  }
  });
+
+ //filefilter for only selected type of image is inserted to database
 const fileFilter= (req,file,cb)=>{
 if(file.mimetype ==='image/png' || file.mimetype==='image/jpeg' || file.mimetype==='image/jpg' ){
 cb(null,true)
@@ -18,6 +22,9 @@ cb(null,false)
   }
 };
 const upload= multer({storage:storage,fileFilter:fileFilter});
+
+
+//route to add a new post
 router.post("/addpost",upload.single('postimage'),(req,res) => {
         console.log(req.file);
     data = {
@@ -47,14 +54,14 @@ const addPost= new postModel(data);
 
 });
 
-
+//route to fetch all posts from database
 router.get('/',(req,res,next)=>{
 postModel.find().select('_id postdescription postimage posteddate ').exec().
 then(results=>{
   const response= {
         count: results.length,
         posts: results.map(result=>{
-            return{
+            return {
               _id: result._id,
               postdescription:result.postdescription,
               postimage:result.postimage,
@@ -71,7 +78,7 @@ res.status(200).json({"Message":"All posts","Posts":response})
 })
 });
 
-
+//route to fetch posts from id
 router.get('/:postid',(req,res,next)=>{
 const id= req.params.postid
 postModel.findById(id).select('_id postdescription postimage posteddate').exec().
@@ -90,6 +97,26 @@ type:{
 })
 });
 
+//route for update Posts
+router.put('/:postid',upload.single('postimage'),(req,res,next)=>{
+const id=req.params.postid;
+postModel.findByIdAndUpdate({_id:id},
+{postdescription:req.body.postdescription, postimage:req.file.path, posteddate:req.body.posteddate})
+.exec().then(results=>{
+res.status(200).json({
+  "Updated Product":results
+})
+}).catch(err=>{
+ res.json({
+   "Message": "Error updating post"
+ })
+
+
+})
+});
+
+
+//route for deleting posts for database
 router.delete('/:postid',(req,res,next)=>{
 const id= req.params.postid;
 postModel.remove({_id:id}).exec().
