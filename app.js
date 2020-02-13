@@ -6,7 +6,7 @@ const mongoose = require('./database/db');
 const cors = require("cors");
 
 const userRegister = require("./routes/userRegister");
-
+const bitnareEvents = require("./routes/bitnareEvents");
 
 app.use(morgan("dev"));
 app.use(bodyparser.urlencoded({extended:false}));
@@ -14,7 +14,7 @@ app.use(bodyparser.json());
 app.use(cors());
 
 app.use("/user", userRegister);
-
+app.use("/events",bitnareEvents);
 //for handliing cors errors
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");

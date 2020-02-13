@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const BitnareEvents = new mongoose.Schema({
+const bitnareEventsSchema = new mongoose.Schema({
     title : {
         type:String,
         required:[true,'Please add a title'],
@@ -33,4 +33,4 @@ const BitnareEvents = new mongoose.Schema({
 }
 );
 
-module.exports = mongoose.model('BitnareEvents');
+module.exports = mongoose.model('bitnare_events',bitnareEventsSchema );
