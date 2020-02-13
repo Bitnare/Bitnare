@@ -8,7 +8,7 @@ const cors = require("cors");
 const userRegister = require("./routes/userRegister");
 const postRoutes= require("./routes/postRoutes.js");
 
-
+app.use("/uploads",express.static('uploads'))
 app.use(morgan("dev"));
 app.use(bodyparser.urlencoded({extended:false}));
 app.use(bodyparser.json());
