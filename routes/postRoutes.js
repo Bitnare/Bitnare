@@ -2,41 +2,30 @@ const express= require('express');
 const router= express.Router();
 const multer= require('multer');
 const postModel= require('../model/Posts.js');
-
- const storage= multer.diskStorage({
- destination:(req,file,cb)=>{
+const storage= multer.diskStorage({
+destination:(req,file,cb)=>{
  cb(null, './uploads/');
  },
-
- filename:(req,file,cb)=>{
+filename:(req,file,cb)=>{
  cb(null,   Date.now()+file.originalname );
  }
  });
-
 const fileFilter= (req,file,cb)=>{
 if(file.mimetype ==='image/png' || file.mimetype==='image/jpeg' || file.mimetype==='image/jpg' ){
 cb(null,true)
-
 }else{
-
-
-    cb(null,false)
+cb(null,false)
   }
 };
-
 const upload= multer({storage:storage,fileFilter:fileFilter});
-
-
 router.post("/addpost",upload.single('postimage'),(req,res) => {
         console.log(req.file);
     data = {
         "postdescription": req.body.postdescription,
         "postimage":req.file.path,
         "posteddate":req.body.posteddate
-
-    }
-
-    const addPost= new postModel(data);
+      }
+const addPost= new postModel(data);
   addPost.save().then(result=>{
      res.status(200).json({
        "message":"Post added Sucessfully",
@@ -70,20 +59,13 @@ then(results=>{
               postdescription:result.postdescription,
               postimage:result.postimage,
               posteddate:result.posteddate,
-
               type:{
                  request: "GET",
                  url:"http://localhost:8000/post/"+ result._id
                }
-            }
-
-
-        })
-
-
-  }
+            }})
+          }
 res.status(200).json({"Message":"All posts","Posts":response})
-
 }).catch(error=>{
   res.status(500).json({"Error":error})
 })
@@ -100,9 +82,7 @@ type:{
   request:"GET",
   url:"http://localhost:8000/post/" + results._id
 }
-
 })
-
 }).catch(err=>{
   res.status(500).json({
     "message":"Error finding Post"
@@ -110,6 +90,17 @@ type:{
 })
 });
 
-
+router.delete('/:postid',(req,res,next)=>{
+const id= req.params.postid;
+postModel.remove({_id:id}).exec().
+then(result=>{
+  res.status(200).json({
+    message:'Post deleted successfully'
+  })
+}).
+catch(err=>{
+  res.status(500).json({"Error":error})
+})
+})
 
 module.exports=router;
