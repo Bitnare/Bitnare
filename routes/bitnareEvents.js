@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const BitnareEvent = require('../model/BitnareEvents');
 const multer= require('multer');
+const fs = require('fs');
 // SET STORAGE
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -62,6 +63,7 @@ router.post('/',upload.single('myFile'),async (req,res,next)=>{
     });
     }
     catch(e){
+        fs.unlinkSync(req.file.path);
         res.status(404).json({
             sucess:false,
             data:e,
