@@ -98,10 +98,10 @@ type:{
 });
 
 //route for update Posts
-router.put('/:postid',upload.single('postimage'),(req,res,next)=>{
+router.patch('/:postid',upload.single('postimage'),(req,res,next)=>{
 const id=req.params.postid;
-postModel.findByIdAndUpdate({_id:id},
-{postdescription:req.body.postdescription, postimage:req.file.path, posteddate:req.body.posteddate})
+postModel.updateOne({_id:id,},{$set:{postdescription:req.body.postdescription,
+ postimage:req.file.path, posteddate:req.body.posteddate}})
 .exec().then(results=>{
 res.status(200).json({
   "Updated Product":results
@@ -110,8 +110,6 @@ res.status(200).json({
  res.json({
    "Message": "Error updating post"
  })
-
-
 })
 });
 
