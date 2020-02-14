@@ -35,6 +35,8 @@ router.post("/addUser",(req,res) => {
                         "smoke"         : req.body.smoke,
                         "education"     : req.body.education,
                         "skills"        : req.body.skills,
+                        "job_title"     : req.body.job_title,
+                        "company_name"  : req.body.company_name,
                         "user_type"     : req.body.user_type,
                         "username"      : req.body.username,
                         "password"      : hashedPassword
