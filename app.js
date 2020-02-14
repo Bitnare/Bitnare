@@ -7,14 +7,12 @@ const cors = require("cors");
 const multer = require('multer');
 
 const userRegister = require("./routes/userRegister");
-<<<<<<< HEAD
 const postRoutes= require("./routes/postRoutes.js");
 
-=======
+
 const bitnareEvents = require("./routes/bitnareEvents");
 
 
->>>>>>> 0d17b9c01fc0f6ba23cd652e5197a5f2f6e402c1
 app.use("/uploads",express.static('uploads'))
 app.use(morgan("dev"));
 app.use(bodyparser.urlencoded({extended:false}));
@@ -22,14 +20,11 @@ app.use(bodyparser.json());
 app.use(cors());
 
 app.use("/user", userRegister);
-<<<<<<< HEAD
 app.use("/post",postRoutes);
 
 
-=======
 app.use("/events",bitnareEvents);
 //for handliing cors errors
->>>>>>> 0d17b9c01fc0f6ba23cd652e5197a5f2f6e402c1
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header(
