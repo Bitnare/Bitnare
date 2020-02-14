@@ -82,7 +82,7 @@ router.post('/login', async function(req, res){
         }catch (e){
             console.log(e);
         }
-    } 
+    }
 });
 //get all user
 router.get('/getUser', function(req,res){
