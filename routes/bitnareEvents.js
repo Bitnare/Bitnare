@@ -63,6 +63,7 @@ router.post('/',upload.single('myFile'),async (req,res,next)=>{
     });
     }
     catch(e){
+        // delete image if there is problem when creating model
         fs.unlinkSync(req.file.path);
         res.status(404).json({
             sucess:false,
