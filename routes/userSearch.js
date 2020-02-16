@@ -24,6 +24,9 @@ router.post('/searchUser', function (req, res){
 
 });
 
+
+// pass in the current address of the user in the request which may be comming from browser or mobile
+// in the url
 router.get('/radius/:address/:distance',async (req,res)=>{
     const {address,distance} = req.params;
     // get longitude and latiude from geolocation
