@@ -7,10 +7,14 @@ const cors = require("cors");
 const multer = require('multer');
 
 const userRegister = require("./routes/userRegister");
+<<<<<<< HEAD
 const postRoutes= require("./routes/postRoutes.js");
 
 
 const bitnareEvents = require("./routes/bitnareEvents");
+=======
+const userSearch = require("./routes/userSearch");
+>>>>>>> new_register
 
 
 app.use("/uploads",express.static('uploads'))
@@ -20,10 +24,14 @@ app.use(bodyparser.json());
 app.use(cors());
 
 app.use("/user", userRegister);
+<<<<<<< HEAD
 app.use("/post",postRoutes);
 
 
 app.use("/events",bitnareEvents);
+=======
+app.use("/search", userSearch);
+>>>>>>> new_register
 //for handliing cors errors
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
