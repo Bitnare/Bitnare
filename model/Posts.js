@@ -4,9 +4,9 @@ const Schema = mongoose.Schema;
 
 const postSchema = new Schema({
 
-  postdescription:{type:String,required:true},
-   postimage:  {type:String,required:true},
-  posteddate:  {type:Date, default:Date.now()}
+    postdescription: { type: String, required: true },
+    postimage: { type: [String], required: true },
+    posteddate: { type: Date, default: Date.now() }
 
 
 
