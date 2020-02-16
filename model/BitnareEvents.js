@@ -22,9 +22,9 @@ const bitnareEventsSchema = new mongoose.Schema({
         type: String,
         required:[true,'Please specify atleast one industry']
     }],
-    photo: {
-        type: String,
-        default: 'no-photo.jpg'
+    photo: { 
+        type: [String],
+        required: true 
     },
     createdAt:{
         type:Date,
