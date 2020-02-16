@@ -22,7 +22,6 @@ const userSchema = new Schema({
     job_title   :  {type:String},
     company_name:  {type:String},
     user_type   :  {type:String},
-<<<<<<< HEAD
     location: {
         // GeoJSON Point
         type: {
@@ -34,9 +33,6 @@ const userSchema = new Schema({
           }
     },
     username    :  {type:String, required: true, unique: true},
-=======
-    username    :  {type:String, requi3red: true, unique: true},
->>>>>>> a8979109b820937f77932c56038d2f05f46d4b0a
     password    :  {type:String, required: true}
 
 });
