@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const user = require("../model/register");
-const geocoder = require('node-geocoder');
+const geocoder = require('../utils/geocoder');
 router.post('/searchUser', function (req, res){
 
     var job = req.body.job;
@@ -24,9 +24,10 @@ router.post('/searchUser', function (req, res){
 
 });
 
-router.getUsersInRadius('/radius/:address/:distance',async (req,res)=>{
+router.get('/radius/:address/:distance',async (req,res)=>{
     const {address,distance} = req.params;
     // get longitude and latiude from geolocation
+    try{
     const loc = await geocoder.geocode(address);
     const latitude= loc[0].latitude;
     const longitude = loc[0].longitude;
@@ -35,18 +36,26 @@ router.getUsersInRadius('/radius/:address/:distance',async (req,res)=>{
     // Divide distance by radius of earth
     // Earth radius = 6,378 km
     const radius = distance / 6378 ;
-
+    
+    //find users by current adress and km
     const users = await user.find({
         location:{
-            $geowithin : { $centerSphere:[[lng,lat],radius]}
+            $geoWithin : { $centerSphere:[[longitude,latitude],radius]}
         }
     });
 
-    res.status.json({
+    res.status(200).json({
         success:true,
         count:users.length,
         data :users
     });
+    }
+    catch(e){
+        res.status(200).json({
+            success:false,
+            data:e
+    });
+    }
 
 })
 module.exports = router;
