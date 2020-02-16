@@ -26,6 +26,7 @@ router.post("/addUser",(req,res) => {
                         "first_name"    : req.body.first_name,
                         "middle_name"   : req.body.middle_name,
                         "last_name"     : req.body.last_name,
+                        "dob"           : req.body.dob,
                         "gender"        : req.body.gender,
                         "hometown"      : req.body.hometown,
                         "current_city"  : req.body.current_city,
@@ -46,7 +47,13 @@ router.post("/addUser",(req,res) => {
                         addUser.save().then(function(){
                         res.send({
                             message:"Sucessful "
-                        })
+                        });
+
+                        
+                    }).catch(err => {
+                        res.status(500).send(
+                            err.errors
+                        );
                     });
 
                 }

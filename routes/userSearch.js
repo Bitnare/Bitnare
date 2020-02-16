@@ -14,6 +14,7 @@ router.post('/searchUser', function (req, res){
         'job_title' : new RegExp (job, 'i'),
         'skills' : new RegExp (skills, 'i'),
         'gender' : new RegExp (gender, 'i'),
+        'dob' : new RegExp (dob, 'i')
     
         }).then (function (listing) {
         console.log(listing);
