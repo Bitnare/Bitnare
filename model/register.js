@@ -9,7 +9,7 @@ const userSchema = new Schema({
     last_name   :  {type:String, required: true},
     dob         :  {type:Date, 
                      default:Date.now(), required: true},
-    gender      :  {type:String, required: true},
+    gender      :  {type:String, required: true},   
     hometown    :  {type:String, required: true},
     current_city:  {type:String, required: true},
     height      :  {type:String, required: true},
@@ -18,8 +18,10 @@ const userSchema = new Schema({
     smoke       :  {type:String, required: true},
     education   :  {type:String, required: true},
     skills      :  {type:String, required: true},
+    job_title   :  {type:String},
+    company_name:  {type:String},
     user_type   :  {type:String},
-    username    :  {type:String, required: true, unique: true},
+    username    :  {type:String, requi3red: true, unique: true},
     password    :  {type:String, required: true}
 
 });
