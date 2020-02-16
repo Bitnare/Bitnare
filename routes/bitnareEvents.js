@@ -53,9 +53,12 @@ router.get('/:id',async (req,res,next)=>{
 });
 
 // Post event
-router.post('/',upload.single('myFile'),async (req,res,next)=>{
+router.post('/',upload.array('myFile',10),async (req,res,next)=>{
    try{
-    req.body.photo = req.file.path;   
+    req.body.photo = req.files.map(file => {
+        const imagePath = file.path;
+        return imagePath
+    });   
     const event = await BitnareEvent.create(req.body);
     res.status(201).json({
         sucess:true,
@@ -63,8 +66,11 @@ router.post('/',upload.single('myFile'),async (req,res,next)=>{
     });
     }
     catch(e){
-        // delete image if there is problem when creating model
-        fs.unlinkSync(req.file.path);
+        // deletes images if there is problem when creating model
+        req.body.photo.forEach(photo_url => {
+            fs.unlinkSync(photo_url);
+        });
+        
         res.status(404).json({
             sucess:false,
             data:e,
