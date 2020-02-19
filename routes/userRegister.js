@@ -6,10 +6,26 @@ const saltRounds = 10;
 
 router.post("/addUser",(req,res) => {
 
-    // var password = generator.generate({
-    //     length: 10,
-    //     numbers: true
-    // });
+//   var date = new Date.now()
+
+    // var current = new Date();
+    //         console.log(current)
+    //         var dob = new Date(req.body.dob);
+    //         console.log(dob)
+        //   user.collection.aggregate([{
+        //        $project:{
+        //            dayssince:{
+        //            $subtract:[current,dob]
+        //            }
+        //         }
+        //     }       
+        //    ]);
+        // var datediff=current.getFullYear()-dob.getFullYear();
+        // console.log(datediff);
+
+        // var age =  datediff;
+           
+ var dob= new Date(req.body.dob);
 
     var password = req.body.password;
 
@@ -26,7 +42,7 @@ router.post("/addUser",(req,res) => {
                         "first_name"    : req.body.first_name,
                         "middle_name"   : req.body.middle_name,
                         "last_name"     : req.body.last_name,
-                        "dob"           : req.body.dob,
+                        "dob"           : dob,
                         "gender"        : req.body.gender,
                         "hometown"      : req.body.hometown,
                         "current_city"  : req.body.current_city,
@@ -38,7 +54,8 @@ router.post("/addUser",(req,res) => {
                         "skills"        : req.body.skills,
                         "job_title"     : req.body.job_title,
                         "company_name"  : req.body.company_name,
-                        "user_type"     : req.body.user_type,
+                        // "user_type"     : req.body.user_type,
+                        "email"         : req.body.email,
                         "username"      : req.body.username,
                         "password"      : hashedPassword
                     }
@@ -63,6 +80,7 @@ router.post("/addUser",(req,res) => {
     })
 });
 
+//login user
 router.post('/login', async function(req, res){
     if (req.body.username == "") {
         res.json({
@@ -75,12 +93,13 @@ router.post('/login', async function(req, res){
 
     } else {
         try {
-            const users = await user.checkCrediantialsDb(req.body.username, req.body.password);
+            const users = await user.checkCrediantialsDb(req.body.username,  req.body.password);
             if (users) {
                 var id = users._id;
 
                 res.send({
-                    id
+                    id, 
+                    message: "Login sucess"
                 });
 
             }else{
@@ -95,8 +114,20 @@ router.post('/login', async function(req, res){
 });
 //get all user
 router.get('/getUser', function(req,res){
-    user.find().then(function(users){
-        res.send(users);
+
+    user.find()
+    .then(function(users){
+
+        if(users){
+            var dob =users[0].dob;
+            var current = new Date();
+                    var dob = new Date(dob);
+       
+            var datediff=current.getFullYear()-dob.getFullYear();
+            res.send(users);
+            console.log(datediff);
+               }
+
     }).catch(function(e){
         res.send(e);
     });
@@ -105,12 +136,22 @@ router.get('/getUser', function(req,res){
 router.get("/fetchUser/:id", function (req,res){
     var UserId = req.params.id.toString();
     console.log(UserId);
+
     user.find({
         _id: UserId
     })
     .select("-_v")
     .then(function (getuser) {
-        res.send(getuser);
+        if(getuser){
+     var dob =getuser[0].dob;
+     var current = new Date();
+             var dob = new Date(dob);
+
+     var datediff=current.getFullYear()-dob.getFullYear();
+     var age = datediff;
+     res.send(getuser);
+     console.log(age);
+        }
     }).catch(function (e) {
         res.send(e);
     });

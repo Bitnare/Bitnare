@@ -21,7 +21,7 @@ const userSchema = new Schema({
     //                  default:Date.now(), required: true},
     dob         :  
     {type:String, 
-        required: [true, 'Enter your date of birth']
+        required: [true, 'Enter your date of birth'],
     },
     gender      :  {
         type:String, 
@@ -66,7 +66,19 @@ const userSchema = new Schema({
         type:String
     },
     user_type   :  {
-        type:String
+        type:String,
+        default: "user"
+    },
+    email       : {
+        type: String, 
+        required: [true, 'Enter your email'],
+        unique: true,
+        lowercase: true,
+        validate:{
+            validator: validator.isEmail,
+            message: 'Enter a valid email',
+            isAsync: false
+        }
     },
     username    :  {
         type:String, 
