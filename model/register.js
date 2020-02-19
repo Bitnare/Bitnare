@@ -65,10 +65,6 @@ const userSchema = new Schema({
     company_name:  {
         type:String
     },
-    user_type   :  {
-        type:String,
-        default: "user"
-    },
     email       : {
         type: String, 
         required: [true, 'Enter your email'],
@@ -91,6 +87,8 @@ const userSchema = new Schema({
     }
 
 });
+
+//hashed password
 userSchema.statics.checkCrediantialsDb = async (username, password,callback) => {
     const user = await User.findOne({
         username: username

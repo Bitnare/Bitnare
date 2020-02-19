@@ -93,7 +93,7 @@ router.post('/login', async function(req, res){
 
     } else {
         try {
-            const users = await user.checkCrediantialsDb(req.body.username,  req.body.password);
+            const users = await user.checkCrediantialsDb(req.body.username, req.body.password);
             if (users) {
                 var id = users._id;
 
@@ -132,6 +132,8 @@ router.get('/getUser', function(req,res){
         res.send(e);
     });
 });
+
+
 //get user by id
 router.get("/fetchUser/:id", function (req,res){
     var UserId = req.params.id.toString();

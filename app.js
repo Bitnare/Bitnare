@@ -8,6 +8,7 @@ const multer = require('multer');
 
 const userRegister = require("./routes/userRegister");
 const userSearch = require("./routes/userSearch");
+const adminLogin = require("./routes/adminLogin");
 
 
 app.use("/uploads",express.static('uploads'))
@@ -18,6 +19,9 @@ app.use(cors());
 
 app.use("/user", userRegister);
 app.use("/search", userSearch);
+app.use("/admin", adminLogin);
+
+
 //for handliing cors errors
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
