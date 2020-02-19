@@ -11,7 +11,7 @@ const postRoutes = require("./routes/postRoutes.js");
 
 
 const bitnareEvents = require("./routes/bitnareEvents");
-
+const userSearch = require('./routes/userSearch');
 
 app.use("/uploads", express.static('uploads'))
 app.use(morgan("dev"));
@@ -20,7 +20,11 @@ app.use(bodyparser.json());
 app.use(cors());
 
 app.use("/user", userRegister);
+
 app.use("/post", postRoutes);
+
+
+app.use('/search',userSearch);
 
 
 app.use("/events", bitnareEvents);
