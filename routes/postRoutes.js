@@ -129,7 +129,7 @@ router.patch('/:postid', upload.array('postimage', 10), (req, res, next) => {
 
 
 //route for deleting posts for database
-router.delete('/:postid', (req, res, next) => {
+router.delete('delete/:postid', (req, res, next) => {
     const id = req.params.postid;
     postModel.remove({ _id: id }).exec().
     then(result => {
