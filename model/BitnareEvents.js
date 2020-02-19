@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const fs = require('fs');
 const bitnareEventsSchema = new mongoose.Schema({
     title : {
         type:String,
@@ -32,5 +32,7 @@ const bitnareEventsSchema = new mongoose.Schema({
     }
 }
 );
+
+
 
 module.exports = mongoose.model('bitnare_events',bitnareEventsSchema );

@@ -107,16 +107,20 @@ catch(e){
 // Delete a single event
 router.delete('/:id',async(req,res,next)=>{
     try{
-    const bitnareEvent = await BitnareEvent.findByIdAndDelete(req.params.id);
-
-    if(! bitnareEvent){
+    const bitnareEvent = await BitnareEvent.findById(req.params.id);
+    const photos = bitnareEvent.photo;
+    const deleteEvent =await BitnareEvent.deleteOne(bitnareEvent);   
+    if(!deleteEvent){
         return res.status(300).json({
             sucess:false,
             data:'The event could not be found',
         });
     }
     else{
-        return res.status(400).json({
+        photos.forEach(photo_url => {
+            fs.unlinkSync(photo_url);
+        });
+        return res.status(200).json({
             sucess:true,
         })
     }
