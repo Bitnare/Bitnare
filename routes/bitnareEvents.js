@@ -79,22 +79,26 @@ router.post('/',upload.array('myFile',10),async (req,res,next)=>{
 });
 
 //Update Single Event
-router.put('/:id',async(req,res,next)=>{
+router.put('/:id',upload.array('myFile',10),async(req,res,next)=>{
     try{
-    const bitnareEvent = await BitnareEvent.findByIdAndUpdate(req.params.id);
+    
+    const bitnareEvent = await BitnareEvent.findByIdAndUpdate(req.params.id,req.body,{
+        new:true,
+        runValidators:true
+    });
 
     if(! bitnareEvent){
-        return res.status(300).json({
+        return res.status(400).json({
             sucess:false,
             data:'The event could not be found',
         });
     }
-    else{
-        return res.status(400).json({
+    
+        return res.status(200).json({
             sucess:true,
             data:bitnareEvent,
         });
-    }
+    
 }
 catch(e){
     res.status(400).json({
