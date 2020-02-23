@@ -16,12 +16,13 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 // Get all Events
-router.get('/',async (req,res,next)=>{
+router.get('/',async (req,res)=>{
     try{
         const bitnareEvents =await BitnareEvent.find();
+       
         res.status(200).json({
             sucess:true,
-            data:bitnareEvents
+            data:bitnareEvents,
         })
     }
     catch(e){
@@ -59,6 +60,10 @@ router.post('/',upload.array('myFile',10),async (req,res,next)=>{
         const imagePath = file.path;
         return imagePath
     });   
+    formatteddate = new Date(`${req.body.start_date} ${req.body.startevent_time}`);
+    req.body.start_date = formatteddate;
+
+    console.log(req.body.start_date.getHours() );
     const event = await BitnareEvent.create(req.body);
     res.status(201).json({
         sucess:true,

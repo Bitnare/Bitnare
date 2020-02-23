@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const fs = require('fs');
+const moment = require('moment');
 const bitnareEventsSchema = new mongoose.Schema({
     title : {
         type:String,
@@ -26,6 +27,10 @@ const bitnareEventsSchema = new mongoose.Schema({
         type: [String],
         required: true 
     },
+    formattedstartdate:String,
+    start_hour:String,
+    formattedenddate:String,
+    end_hour:String,
     createdAt:{
         type:Date,
         default:Date.now
@@ -33,6 +38,17 @@ const bitnareEventsSchema = new mongoose.Schema({
 }
 );
 
+//  handles all time formatting
+bitnareEventsSchema.post('init',async function(){
+    // send formatted date using moment js
+    let formatstartdate = moment(this.start_date).format("YYYY-MM-DD");
+    this.formattedstartdate = formatstartdate.toString();
+    this.start_hour = moment(this.start_date).hour();
+
+    let formatenddate = moment(this.end_date).format("YYYY-MM-DD");
+    this.formattedenddate = formatenddate.toString();
+    this.end_hour = moment(this.end_date).hour();
+});
 
 
 module.exports = mongoose.model('bitnare_events',bitnareEventsSchema );
