@@ -103,7 +103,7 @@ router.get('/:postid', (req, res, next) => {
 });
 
 //route for update Posts
-router.patch('update/:postid', upload.array('postimage', 10), (req, res, next) => {
+router.put('/update/:postid', upload.array('postimage', 10), (req, res, next) => {
     const id = req.params.postid;
     postModel.updateOne({ _id: id, }, {
             $set: {
