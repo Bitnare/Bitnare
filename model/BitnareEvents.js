@@ -38,16 +38,41 @@ const bitnareEventsSchema = new mongoose.Schema({
 }
 );
 
-//  handles all time formatting
-bitnareEventsSchema.post('init',async function(){
-    // send formatted date using moment js
-    let formatstartdate = moment(this.start_date).format("YYYY-MM-DD");
+//  handles all post time formatting
+bitnareEventsSchema.pre('save',function(){
+    // save formatted date using moment js    
+    console.log('This was called pre save'); 
+    let formatstartdate = moment(this.start_date).format("YYYY-MM-DD hh:mm A");
     this.formattedstartdate = formatstartdate.toString();
     this.start_hour = moment(this.start_date).hour();
-
-    let formatenddate = moment(this.end_date).format("YYYY-MM-DD");
+        
+    let formatenddate = moment(this.end_date).format("YYYY-MM-DD hh:mm A");
     this.formattedenddate = formatenddate.toString();
     this.end_hour = moment(this.end_date).hour();
+});
+
+//handles all update time formatting
+bitnareEventsSchema.pre('findOneAndUpdate', function(next) {
+    const start_date=this._update.start_date;
+    const end_date = this._update.end_date;
+    if(!start_date || !end_date){
+        return next();
+    }
+    try{
+        const formattedstartDate = moment(start_date).format("YYYY-MM-DD hh:mm A");
+        this._update.formattedstartdate = formattedstartDate.toString();
+        this._update.start_hour =moment(formattedstartDate.toString()).hour();
+
+        const formattedendDate = moment(end_date).format("YYYY-MM-DD hh:mm A");
+        this._update.formattedenddate = formattedendDate.toString();
+        this._update.end_hour =moment(formattedendDate.toString()).hour();
+        next();
+    }
+    catch (error) {
+        return next(error);
+    }
+
+    
 });
 
 

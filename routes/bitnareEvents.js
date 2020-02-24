@@ -3,6 +3,7 @@ const router = express.Router();
 const BitnareEvent = require('../model/BitnareEvents');
 const multer= require('multer');
 const fs = require('fs');
+const moment = require('moment');
 // SET STORAGE
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -60,10 +61,12 @@ router.post('/',upload.array('myFile',10),async (req,res,next)=>{
         const imagePath = file.path;
         return imagePath
     });   
-    formatteddate = new Date(`${req.body.start_date} ${req.body.startevent_time}`);
-    req.body.start_date = formatteddate;
+    formattedstartdate = moment(`${req.body.start_date} ${req.body.startevent_time}`);
+    req.body.start_date = formattedstartdate;
 
-    console.log(req.body.start_date.getHours() );
+    formattedenddate = moment(`${req.body.end_date} ${req.body.endevent_time}`);
+    req.body.end_date= formattedenddate;
+
     const event = await BitnareEvent.create(req.body);
     res.status(201).json({
         sucess:true,
@@ -86,6 +89,16 @@ router.post('/',upload.array('myFile',10),async (req,res,next)=>{
 //Update Single Event
 router.put('/:id',upload.array('myFile',10),async(req,res,next)=>{
     try{
+
+
+    formattedstartDate = moment(`${req.body.start_date} ${req.body.startevent_time}`);
+  
+    req.body.start_date = formattedstartDate;
+
+    formattedenddate = moment(`${req.body.end_date} ${req.body.endevent_time}`);
+
+    req.body.end_date =  formattedenddate;
+  
     
     const bitnareEvent = await BitnareEvent.findByIdAndUpdate(req.params.id,req.body,{
         new:true,
