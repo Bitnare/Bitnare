@@ -61,10 +61,10 @@ router.post('/',upload.array('myFile',10),async (req,res,next)=>{
         const imagePath = file.path;
         return imagePath
     });   
-    formattedstartdate = moment(`${req.body.start_date} ${req.body.startevent_time}`);
+    formattedstartdate = moment(`${req.body.start_date} ${req.body.start_hour}`);
     req.body.start_date = formattedstartdate;
 
-    formattedenddate = moment(`${req.body.end_date} ${req.body.endevent_time}`);
+    formattedenddate = moment(`${req.body.end_date} ${req.body.end_hour}`);
     req.body.end_date= formattedenddate;
 
     const event = await BitnareEvent.create(req.body);
@@ -91,11 +91,11 @@ router.put('/:id',upload.array('myFile',10),async(req,res,next)=>{
     try{
 
 
-    formattedstartDate = moment(`${req.body.start_date} ${req.body.startevent_time}`);
+    formattedstartDate = moment(`${req.body.start_date} ${req.body.start_hour}`);
   
     req.body.start_date = formattedstartDate;
 
-    formattedenddate = moment(`${req.body.end_date} ${req.body.endevent_time}`);
+    formattedenddate = moment(`${req.body.end_date} ${req.body.end_hour}`);
 
     req.body.end_date =  formattedenddate;
   

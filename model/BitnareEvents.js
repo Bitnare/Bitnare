@@ -41,7 +41,7 @@ const bitnareEventsSchema = new mongoose.Schema({
 //  handles all post time formatting
 bitnareEventsSchema.pre('save',function(){
     // save formatted date using moment js    
-    console.log('This was called pre save'); 
+ 
     let formatstartdate = moment(this.start_date).format("YYYY-MM-DD hh:mm A");
     this.formattedstartdate = formatstartdate.toString();
     this.start_hour = moment(this.start_date).hour();
