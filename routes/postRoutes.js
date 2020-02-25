@@ -35,7 +35,7 @@ router.post("/addpost", upload.array('postimage', 10), (req, res) => {
         "posteddate": req.body.posteddate
     }
 
-    console.log(data)
+
     const addPost = new postModel(data);
     addPost.save().then(result => {
         res.status(200).json({
@@ -103,16 +103,11 @@ router.get('/:postid', (req, res, next) => {
 });
 
 //route for update Posts
-router.patch('/:postid', upload.array('postimage', 10), (req, res, next) => {
+router.put('/update/:postid', (req, res, next) => {
     const id = req.params.postid;
     postModel.updateOne({ _id: id, }, {
             $set: {
                 postdescription: req.body.postdescription,
-                postimage: req.files.map(file => {
-                    const imagePath = file.path;
-                    return imagePath
-
-                }),
                 posteddate: req.body.posteddate
             }
         })
@@ -129,8 +124,8 @@ router.patch('/:postid', upload.array('postimage', 10), (req, res, next) => {
 
 
 //route for deleting posts for database
-router.delete('/:postid', (req, res, next) => {
-    const id = req.params.postid;
+router.delete('/delete/:id', (req, res, next) => {
+    const id = req.params.id;
     postModel.remove({ _id: id }).exec().
     then(result => {
         res.status(200).json({
