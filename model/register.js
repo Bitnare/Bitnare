@@ -1,41 +1,94 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require("bcrypt");
-const geocoder = require("../utils/geocoder");
+const validator = require('validator');
+const uniqueValidator = require('mongoose-unique-validator');
 
 const userSchema = new Schema({
 
-    first_name  :  {type:String, required: true},
-    middle_name :  {type:String},
-    last_name   :  {type:String, required: true},
-    dob         :  {type:Date, 
-                     default:Date.now(), required: true},
-    gender      :  {type:String, required: true},   
-    hometown    :  {type:String, required: true},
-    adress      :  {type:String, required: true},
-    height      :  {type:String, required: true},
-    weight      :  {type:String, required: true},
-    drink       :  {type:String, required: true},
-    smoke       :  {type:String, required: true},
-    education   :  {type:String, required: true},
-    skills      :  {type:String, required: true},
-    job_title   :  {type:String},
-    company_name:  {type:String},
-    user_type   :  {type:String},
-    location: {
-        // GeoJSON Point
-        type: {
-          type: String,
-          enum: ['Point']
-        },coordinates: {
-            type: [Number],
-            index: '2dsphere'
-          }
+    first_name  :  {
+        type:String, 
+        required: true
     },
-    username    :  {type:String, required: true, unique: true},
-    password    :  {type:String, required: true}
+    middle_name :  {
+        type:String
+    },
+    last_name   :  {
+        type:String, 
+        required: true
+    },
+    // dob         :  {type:Date, 
+    //                  default:Date.now(), required: true},
+    dob         :  
+    {type:String, 
+        required: [true, 'Enter your date of birth'],
+    },
+    gender      :  {
+        type:String, 
+        required: [true, 'Enter your gender']
+    },   
+    hometown    :  {
+        type:String, 
+        required: [true, 'Enter your hometown']
+    },
+    current_city:  {
+        type:String, 
+        required: [true, 'Enter your current address']
+    },
+    height      :  {
+        type:String, 
+        required: [true, 'Enter your height']
+    },
+    weight      :  {
+        type:String, 
+        required: [true, 'Enter your weight']
+    },
+    drink       :  {
+        type:String, 
+        required: [true, 'Enter alcohol intake']
+    },
+    smoke       :  {
+        type:String, 
+        required: [true, 'Enter smoke information']
+    },
+    education   :  {
+        type:String, 
+        required: [true, 'Enter your education level']
+    },
+    skills      :  {
+        type:String, 
+        required: [true, 'Enter your skills']
+    },
+    job_title   :  {
+        type:String
+    },
+    company_name:  {
+        type:String
+    },
+    email       : {
+        type: String, 
+        required: [true, 'Enter your email'],
+        unique: true,
+        lowercase: true,
+        validate:{
+            validator: validator.isEmail,
+            message: 'Enter a valid email',
+            isAsync: false
+        }
+    },
+    username    :  {
+        type:String, 
+        required: [true, 'Enter username'], 
+        unique: true},
+    password    :  {
+        type:String, 
+        required: [true,'Enter password'],
+        minlength: [8,'Enter valid password']
+    }
+})
 
-});
+
+//hashed password
 userSchema.statics.checkCrediantialsDb = async (username, password,callback) => {
     const user = await User.findOne({
         username: username
@@ -49,15 +102,8 @@ userSchema.statics.checkCrediantialsDb = async (username, password,callback) => 
      
     };
 }
-//save longitude and latitude of  adress(requires city ,address and zipcode for increased accuracy
-// for example Chabahil, Kathmandu 44602)
-userSchema.pre('save',async function(next){
-    const loc = await geocoder.geocode(this.adress);
-    this.location={
-        type:'Point',
-        coordinates: [loc[0].longitude,loc[0].latitude],
-    }
-    next();
-})
+
+
+userSchema.plugin(uniqueValidator);
 const User = mongoose.model("register", userSchema);
 module.exports = User;
