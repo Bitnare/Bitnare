@@ -95,7 +95,7 @@ router.put('/:id',upload.array('myFile',10),async(req,res,next)=>{
             return imagePath
     });   
     
-    // add to existing photo array when user adds new image on update
+    // push to existing photo array when user adds new image on update
     await BitnareEvent.findByIdAndUpdate( req.params.id,{ $push : {"photo":photoArray}},
         {safe :true , upsert : true});
 
@@ -162,4 +162,30 @@ router.delete('/:id',async(req,res,next)=>{
     }
 });
 
+
+router.put('/:id/images',upload.array('myFile',10),async(req,res,next)=>{
+    try{
+        // pull from existing photo array when user deletes image on update
+        const deleteImage= await BitnareEvent.update({_id:req.params.id},{ $pull : {"photo":req.body.image_source}});
+        if(!deleteImage){
+            return res.status(300).json({
+                sucess:false,
+                data:'The image could not be deleted',
+            });
+        }
+        else{
+            fs.unlinkSync(req.body.image_source);
+            return res.status(200).json({
+                sucess:true,
+            })
+        }
+
+    }
+    catch(e){
+        console.log(e);
+    }
+});   
+   
+   
+    
 module.exports = router;
