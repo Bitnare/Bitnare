@@ -103,17 +103,12 @@ router.get('/:postid', (req, res, next) => {
 });
 
 //route for update Posts
-router.put('/update/:postid', upload.array('postimage', 10), (req, res, next) => {
+router.put('/update/:postid', (req, res, next) => {
 
     const id = req.params.postid;
     postModel.updateOne({ _id: id, }, {
             $set: {
                 postdescription: req.body.postdescription,
-                postimage: req.files.map(file => {
-                    const imagePath = file.path;
-                    return imagePath
-
-                }),
                 posteddate: req.body.posteddate
             }
         })

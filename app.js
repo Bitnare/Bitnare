@@ -24,7 +24,7 @@ app.use("/user", userRegister);
 app.use("/post", postRoutes);
 
 
-app.use('/search',userSearch);
+app.use('/search', userSearch);
 
 
 app.use("/events", bitnareEvents);
