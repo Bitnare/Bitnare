@@ -89,7 +89,15 @@ router.post('/',upload.array('myFile',10),async (req,res,next)=>{
 //Update Single Event
 router.put('/:id',upload.array('myFile',10),async(req,res,next)=>{
     try{
-
+   //access the posted image collection using multter
+    var photoArray = req.files.map(file => {
+            const imagePath = file.path;
+            return imagePath
+    });   
+    
+    // add to existing photo array when user adds new image on update
+    await BitnareEvent.findByIdAndUpdate( req.params.id,{ $push : {"photo":photoArray}},
+        {safe :true , upsert : true});
 
     formattedstartDate = moment(`${req.body.start_date} ${req.body.start_hour}`);
   
@@ -98,11 +106,10 @@ router.put('/:id',upload.array('myFile',10),async(req,res,next)=>{
     formattedenddate = moment(`${req.body.end_date} ${req.body.end_hour}`);
 
     req.body.end_date =  formattedenddate;
-  
     
-    const bitnareEvent = await BitnareEvent.findByIdAndUpdate(req.params.id,req.body,{
-        new:true,
-        runValidators:true
+    //updating rest of non image fields
+    const bitnareEvent = await BitnareEvent.findByIdAndUpdate(req.params.id, req.body,{
+        upsert: true, new: true
     });
 
     if(! bitnareEvent){

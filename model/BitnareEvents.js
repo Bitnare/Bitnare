@@ -38,10 +38,9 @@ const bitnareEventsSchema = new mongoose.Schema({
 }
 );
 
-//  handles all post time formatting
+//  handles all post time formatting using moment library
 bitnareEventsSchema.pre('save',function(){
-    // save formatted date using moment js    
- 
+    
     let formatstartdate = moment(this.start_date).format("YYYY-MM-DD hh:mm A");
     this.formattedstartdate = formatstartdate.toString();
     this.start_hour = moment(this.start_date).hour();
@@ -51,7 +50,7 @@ bitnareEventsSchema.pre('save',function(){
     this.end_hour = moment(this.end_date).hour();
 });
 
-//handles all update time formatting
+//handles all update time formatting using moment library
 bitnareEventsSchema.pre('findOneAndUpdate', function(next) {
     const start_date=this._update.start_date;
     const end_date = this._update.end_date;
@@ -59,6 +58,7 @@ bitnareEventsSchema.pre('findOneAndUpdate', function(next) {
         return next();
     }
     try{
+     
         const formattedstartDate = moment(start_date).format("YYYY-MM-DD hh:mm A");
         this._update.formattedstartdate = formattedstartDate.toString();
         this._update.start_hour =moment(formattedstartDate.toString()).hour();
