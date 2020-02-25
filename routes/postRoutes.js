@@ -35,7 +35,7 @@ router.post("/addpost", upload.array('postimage', 10), (req, res) => {
         "posteddate": req.body.posteddate
     }
 
-    console.log(data)
+
     const addPost = new postModel(data);
     addPost.save().then(result => {
         res.status(200).json({
@@ -104,7 +104,6 @@ router.get('/:postid', (req, res, next) => {
 
 //route for update Posts
 router.put('/update/:postid', (req, res, next) => {
-
     const id = req.params.postid;
     postModel.updateOne({ _id: id, }, {
             $set: {
