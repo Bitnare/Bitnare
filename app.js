@@ -7,6 +7,8 @@ const cors = require("cors");
 const multer = require('multer');
 
 const userRegister = require("./routes/userRegister");
+const userSearch = require("./routes/userSearch");
+const adminLogin = require("./routes/adminLogin");
 const postRoutes = require("./routes/postRoutes.js");
 
 
@@ -20,6 +22,11 @@ app.use(bodyparser.json());
 app.use(cors());
 
 app.use("/user", userRegister);
+app.use("/search", userSearch);
+app.use("/admin", adminLogin);
+
+
+
 
 app.use("/post", postRoutes);
 
@@ -28,6 +35,7 @@ app.use('/search', userSearch);
 
 
 app.use("/events", bitnareEvents);
+
 //for handliing cors errors
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
