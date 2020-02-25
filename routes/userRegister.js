@@ -60,24 +60,6 @@ router.post("/addUser", (req, res) => {
                         "username"      : req.body.username,
                         "password"      : hashedPassword
 
-                        "first_name": req.body.first_name,
-                        "middle_name": req.body.middle_name,
-                        "last_name": req.body.last_name,
-                        "gender": req.body.gender,
-                        "hometown": req.body.hometown,
-                        "current_city": req.body.current_city,
-                        "height": req.body.height,
-                        "weight": req.body.weight,
-                        "drink": req.body.drink,
-                        "smoke": req.body.smoke,
-                        "education": req.body.education,
-                        "skills": req.body.skills,
-                        "job_title": req.body.job_title,
-                        "company_name": req.body.company_name,
-                        "user_type": req.body.user_type,
-                        "username": req.body.username,
-                        "password": hashedPassword
-
                     }
 
                     var addUser = new user(data);
@@ -93,22 +75,16 @@ router.post("/addUser", (req, res) => {
                             err.errors
                         );
 
-                            message: "Sucessful "
                         })
-
-                    });
 
                 }
 
             })
         }
-    })
 });
 
 
 //login user
-router.post('/login', async function(req, res){
-
 router.post('/login', async function(req, res) {
 
     if (req.body.username == "") {
@@ -161,6 +137,8 @@ router.get('/getUser', function(req,res){
                }
 
     }).catch(function(e){
+})
+
 
 router.get('/getUser', function(req, res) {
     user.find().then(function(users) {
@@ -231,5 +209,5 @@ router.delete('/deleteUser/:id', function(req, res) {
         res.send(e);
     });
 });
-
+})
 module.exports = router;
