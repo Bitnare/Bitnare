@@ -9,11 +9,15 @@ const multer = require('multer');
 const userRegister = require("./routes/userRegister");
 const userSearch = require("./routes/userSearch");
 const adminLogin = require("./routes/adminLogin");
+const postRoutes = require("./routes/postRoutes.js");
 
 
-app.use("/uploads",express.static('uploads'))
+const bitnareEvents = require("./routes/bitnareEvents");
+const userSearch = require('./routes/userSearch');
+
+app.use("/uploads", express.static('uploads'))
 app.use(morgan("dev"));
-app.use(bodyparser.urlencoded({extended:false}));
+app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 app.use(cors());
 
@@ -22,41 +26,45 @@ app.use("/search", userSearch);
 app.use("/admin", adminLogin);
 
 
+
+
+app.use("/post", postRoutes);
+
+
+app.use('/search', userSearch);
+
+
+app.use("/events", bitnareEvents);
+
 //for handliing cors errors
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header(
-      "Access-Control-Allow-Headers",
-      "Origin,X-Requested-With,Content-Type,Authorization"
+        "Access-Control-Allow-Headers",
+        "Origin,X-Requested-With,Content-Type,Authorization"
     );
     if (req.method === "OPTIONS") {
-      res.header("Access-Control-Allow-Methods", "PUT,POST,PATCH,DELETE");
-      return res.status(200).json({});      
+        res.header("Access-Control-Allow-Methods", "PUT,POST,PATCH,DELETE");
+        return res.status(200).json({});
     }
     next();
-  });
+});
 
 
 
-  //error handling
 app.use((req, res, next) => {
     const error = new Error("Not found");
     error.status = 404;
     next(error);
-  });
-  
-  app.use((error, req, res, next) => {
+});
+
+app.use((error, req, res, next) => {
     res.status(error.status || 500);
     res.json({
-      error: {
-        message: error.message
-      }
+        error: {
+            message: error.message
+        }
     });
-  });
-  const port = process.env.PORT || 8000;
-  app.listen(port);
-
-
-
-
-
+});
+const port = process.env.PORT || 8000;
+app.listen(port);
