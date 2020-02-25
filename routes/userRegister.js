@@ -125,9 +125,11 @@ router.post('/login', async function(req, res) {
             const users = await user.checkCrediantialsDb(req.body.username, req.body.password);
             if (users) {
                 var id = users._id;
+                var username = users.username;
 
                 res.send({
                     id, 
+                    username,
                     message: "Login sucess"
                 });
 
